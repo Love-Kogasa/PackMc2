@@ -1,0 +1,16 @@
+{
+  "weapon": {},
+  "damage": 4,
+  "max_stack_size": 1,
+  "hand_equipped": true,
+  "repairable": {
+    "repair_items": [{
+      "items": ["minecraft:gold_ingot"],
+      "repair_amount": 10
+    }]
+  },
+  "enchantable": {
+    "value": 10,
+    "slot": "sword"
+  }
+}

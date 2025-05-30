@@ -1,0 +1,7 @@
+{
+  "table": [ "x", "x", "y" ],
+  "key": {
+    "x": "minecraft:iron_ingot",
+    "y": "minecraft:stick"
+  }
+}
