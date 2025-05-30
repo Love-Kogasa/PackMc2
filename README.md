@@ -1,5 +1,5 @@
 # PackMc2 - beta
-*本版本为PackMc2测试版本，不保证稳定运行*
+PackMc2-Beta OpenSource v1.0.0
 
 ## 介绍
 PackMc2 是一个以方便快捷为标准的全新的JavaScript MinecraftAddon生成框架！  
