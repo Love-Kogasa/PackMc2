@@ -28,9 +28,10 @@ mod.plugins.CustomCommand.createCmd( "hi", ( plr, args, mc ) => {
 })
 
 // Active
+mcmod.loadResources( "example/TVRes" )
 mod.onMinecraft(( mc ) => {
   // ! only-read with JSONAPI
-  mc.fs.writeFileSync( "hello.txt", "Hello World" )
+  // mc.fs.writeFileSync( "hello.txt", "Hello World" )
   // 该fs是为PackMc非nodejs环境运行专写的一份vfs，如果有使用需求，需要在package.json中添加
   // 无论添不添加，都可以在mc对象中访问vfs
   mc.world.afterEvents.chatSend.subscribe(arg => {

@@ -89,6 +89,9 @@ PMC.Context = class {
         append += "import * as $" + name.replaceAll( "-", "_" ) + " from '" + module + "'\n"
       }
       append += "var __dirname = ''\nvar __filename = 'index.js';\n"
+      if( typeof PMC._rvfs == "object" && !PMC.isMinecraftRunTime ){
+        append += "var $_vfs = " + JSON.stringify( PMC._rvfs, 0, 2 ) + ";"
+      }
       fs.writeFileSync( outputPath,
         append + fs.readFileSync( outputPath ).toString())
     }
@@ -113,6 +116,19 @@ PMC.Addon = class {
   followLoveKogasaAtBiliOrX(){
     // 彩蛋函数
     console.log( "Thank You!" )
+  }
+  loadResources( dir, vdir = "." ){
+    if( !PMC.isMinecraftRunTime ){
+      if( typeof PMC._rvfs != "object" ) PMC._rvfs = {}
+      var files = fs.readdirSync( dir, {recursive : true} )
+      for( let fn of files ){
+        if( fs.statSync( path.join( dir, fn ) ).isFile() ){
+          PMC._rvfs[path.join( vdir, fn )] = fs.readFileSync( path.join( dir, fn ) ).toString()
+        } else {
+          PMC._rvfs[path.join( vdir, fn )] = true
+        }
+      }
+    }
   }
   getAddonCtx(){
     return (this.ctx = new PMC.Context( this ))

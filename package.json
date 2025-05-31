@@ -1,0 +1,27 @@
+{
+  "name": "pack-mc-2",
+  "description": "PackMc2-Beta OpenSource v1.0.0",
+  "version": "1.0.2-beta",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "node example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Love-Kogasa/PackMc2.git"
+  },
+  "keywords": [
+    "minecraft",
+    "mcpe",
+    "addon"
+  ],
+  "author": "Love-Kogasa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Love-Kogasa/PackMc2/issues"
+  },
+  "homepage": "https://github.com/Love-Kogasa/PackMc2#readme"
+}
