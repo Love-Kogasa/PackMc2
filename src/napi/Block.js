@@ -113,7 +113,7 @@ class BlockPlugin extends ActivePlugin {
         } else if( v.texture == 2 ){
           textures = {
             up: v.object.subId() + "_top",
-            done: v.object.subId() + "_top",
+            down: v.object.subId() + "_top",
             side: v.object.subId() + "_side"
           }
           textureList.push( v.object.subId() + "_top" )
@@ -121,7 +121,7 @@ class BlockPlugin extends ActivePlugin {
         } else if( v.texture == 3 ){
           textures = {
             up: v.object.subId() + "_top",
-            done: v.object.subId() + "_bottom",
+            down: v.object.subId() + "_bottom",
             side: v.object.subId() + "_side"
           }
           textureList.push( v.object.subId() + "_top" )
@@ -130,7 +130,7 @@ class BlockPlugin extends ActivePlugin {
         } else {
           textures = {
             up: v.object.subId() + "_top",
-            done: v.object.subId() + "_bottom",
+            down: v.object.subId() + "_bottom",
             south: v.object.subId() + "_south",
             north: v.object.subId() + "_north",
             west: v.object.subId() + "_west",
