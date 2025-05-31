@@ -48,8 +48,8 @@ class Block {
     this.object.set( k, v )
     return this
   }
-  get( k ){
-    return this.object.component[k]
+  get( k, namespace = "minecraft:" ){
+    return this.object.component[namespace + k]
   }
   getId(){
     return this.id
