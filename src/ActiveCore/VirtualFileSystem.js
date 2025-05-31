@@ -1,6 +1,6 @@
 var path = require( "path" )
 module.exports = {
-  _vDir: {},
+  _vDir: typeof $_vfs == "object" ? $_vfs : {},
   virtual: true,
   existsSync( path ){
     return !!this._vDir[path]
