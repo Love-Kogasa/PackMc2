@@ -147,6 +147,14 @@ PMC.Addon = class {
   }
   generate(){
     if( this.ctx ){
+      if( !PMC.isMinecraftRunTime ){
+        fs.writeFileSync(path.join(this.dir, "pmc2.mcpkg"), JSON.stringify({
+          namespace: this.ns,
+          activeEntry: this.entry,
+          scriptApiDirectory: this.scriptPackAt,
+          minecraftModules: this.smodules
+        }, 0, 2 ))
+      }
       return this.ctx.generate()
     }
   }
