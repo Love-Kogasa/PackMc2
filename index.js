@@ -62,6 +62,7 @@ PMC.Context = class {
     this.scripePath = addon.scriptPackAt
     this.modules = addon.smodules
     this.plugins = {}
+    this.isMcRuntime = PMC.isMinecraftRunTime
     this.loadActivePlugin( PMC.Item )
     this.loadActivePlugin( PMC.Event )
     this.loadActivePlugin( PMC.Recipe )
