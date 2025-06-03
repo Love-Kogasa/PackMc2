@@ -1,3 +1,4 @@
+// Util.js
 class MinecraftObject {
   constructor( label, id, version = "1.16.100", namespace = "minecraft:" ){
     this.id = id
@@ -8,12 +9,13 @@ class MinecraftObject {
     this.conditions = void 0
     this.body = {}
     this.namespace = namespace
+    this.description = {}
   }
   json(){
     var json = {
       "format_version": this.format,
       [this.namespace + this.label]: {
-        description: { identifier: this.id },
+        description: { identifier: this.id, ...this.description },
         ...this.body
       }
     }
@@ -55,6 +57,10 @@ class MinecraftObject {
   }
   subId(){
     return this.id.split( ":" )[1]
+  }
+  setDescription( key, value ){
+    this.description[key] = value
+    return this
   }
   // Events
   onGenerateJSON( json ){
