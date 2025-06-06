@@ -1,4 +1,5 @@
 # PackMc2 - beta
+![PackMc2 娘](https://postimage.me/images/2025/06/06/IMG_20250606_201534.md.png)  
 PackMc2-Beta OpenSource v1.0.9  
 如果你是用1.0.7以后的版本。您会发现生成的文件夹中存在一个pmc2.mcpkg文件，这是用来存储包的部分元信息的文件，如果您在您的包中保留这个文件，则您可以通过 https://pmc-fsm.lapis-net.top/ 修改虚拟文件系统的预加载内容
 
