@@ -22,7 +22,7 @@ ctx.onMinecraft(( minecraft ) => {
 
 仅允许在非公共项目中使用SapdonPlugin
 
-当您使用Util中的*MinecraftObject*类时，请您将对象中存放*MinecraftObject*对象的变量名命名为object，目前使用并遵守该规范的类
+当您使用Util中的*MinecraftObject*类时，请您将对象中存放*MinecraftObject*对象的(主要)变量名命名为object，目前使用并遵守该规范的类
 * `Block`
 
 建议在Plugin自定义对象中增加getCmd，getId，toString，extend方法，分别返回相应的 指令，id，id, 自定义继承

@@ -51,10 +51,37 @@ PMC.Item = class extends PMC.RePackMcPlugin {
   }
 }
 
+// Core plugin (Version >= 1.0.92)
+PMC.InsertClass = class {
+  static initMethods = []
+  static INIT = "constructor"
+  static registryMethod( name, value ){
+    if( name = "constructor" ){
+      this.initMethods.push( value )
+    } else {
+      this.prototype[name] = value
+    }
+  }
+  constructor(){
+    PMC.InsertClass.initMethods.forEach((method) => {
+      method.call( this )
+    })
+  }
+}
+PMC.Plugins = {}
+PMC.loadCorePlugin = function( plugin ){
+  var plugin = new plugin( PMC, PMC.Context, PMC.Addon )
+  if( PMC.isMinecraftRunTime ){
+    plugin.initOnMinecraft( PMC.Minecraft )
+  } else plugin.initOnNode()
+  PMC.Plugins[plugin.define] = plugin
+}
+
 // Context
 PMC.DefaultEntry = "scripts/index.js"
-PMC.Context = class {
+PMC.Context = class extends PMC.InsertClass  {
   constructor( addon ){
+    super()
     this.dir = addon.dir
     this.namespace = addon.ns
     this.addon = addon
@@ -63,6 +90,7 @@ PMC.Context = class {
     this.modules = addon.smodules
     this.plugins = {}
     this.isMcRuntime = PMC.isMinecraftRunTime
+    this.append = ""
     this.loadActivePlugin( PMC.Item )
     this.loadActivePlugin( PMC.Event )
     this.loadActivePlugin( PMC.Recipe )
@@ -80,7 +108,9 @@ PMC.Context = class {
   generate(){
     for( let key of Object.keys( this.plugins ) ){
       this.plugins[key].onGenerate()
-      // if( PMC.isMinecraftRunTime ) this.plugins[key].onMinecraft( PMC.Minecrat )
+      if( PMC.isMinecraftRunTime ){
+        this.plugins[key].onGenerateWithMinecraft( PMC.Minecrat )
+      } else this.plugins[key].onGenerateWithNode()
     }
     if( this.entry && !PMC.isMinecraftRunTime ){
       var {execSync} = require( "child_process" ), outputPath, append = ""
@@ -91,8 +121,9 @@ PMC.Context = class {
       }
       append += "var __dirname = ''\nvar __filename = 'index.js';\n"
       if( typeof PMC._rvfs == "object" && !PMC.isMinecraftRunTime ){
-        append += "var $_vfs = " + JSON.stringify( PMC._rvfs, 0, 2 ) + ";"
+        append += "var $_vfs = " + JSON.stringify( PMC._rvfs, 0, 2 ) + ";\n"
       }
+      append += this.append + ";\n"
       fs.writeFileSync( outputPath,
         append + fs.readFileSync( outputPath ).toString())
     }
@@ -105,14 +136,16 @@ PMC.Context = class {
   }
 }
 
-PMC.Addon = class {
+PMC.Addon = class extends PMC.InsertClass {
   constructor( manifest, dir, json = true ){
+    super()
     this.dir = dir
+    this.manifest = manifest
     this.ns = "mod"
     this.entry = false
     this.scriptPackAt = "data/"
     this.smodules = [ "@minecraft/server" ]
-    if( json ) throw "暂不支持生成Manifest"
+    // if( json ) throw "暂不支持生成Manifest"
   }
   followLoveKogasaAtBiliOrX(){
     // 彩蛋函数
@@ -146,6 +179,9 @@ PMC.Addon = class {
     this.smodules.push( name )
     return this
   }
+  onGenerate(){
+  
+  }
   generate(){
     if( this.ctx ){
       if( !PMC.isMinecraftRunTime ){
@@ -158,6 +194,7 @@ PMC.Addon = class {
       }
       return this.ctx.generate()
     }
+    this.onGenerate()
   }
   setNamespace( ns ){ this.ns = ns }
   static fromJSON( dir ){
