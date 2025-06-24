@@ -46,6 +46,12 @@ class ActivePlugin {
   onGenerate(){
   
   }
+  onGenerateWithNode(){
+    
+  }
+  onGenerateWithMinecraft( mc ){
+    
+  }
   onMinecraft( mc ){
   
   }

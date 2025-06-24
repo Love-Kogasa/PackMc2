@@ -15,7 +15,7 @@ class MinecraftObject {
     var json = {
       "format_version": this.format,
       [this.namespace + this.label]: {
-        description: { identifier: this.id, ...this.description },
+        description: { ...this.description, identifier: this.id },
         ...this.body
       }
     }
@@ -60,6 +60,23 @@ class MinecraftObject {
   }
   setDescription( key, value ){
     this.description[key] = value
+    return this
+  }
+  getId(){
+    return this.id
+  }
+  toString(){
+    return this.getId()
+  }
+  extend( object ){
+    Object.assign( this.description, object.description )
+    if( object.component == this.component && this.component !== void 0 )
+      Object.assign( this.component, object.component )
+    if( object.event == this.event && this.event !== void 0 )
+      Object.assign( this.event, object.event )
+    if( object.conditions == this.conditions && this.conditions !== void 0 )
+      Object.assign( this.conditions, object.conditions )
+    Object.assign( this.body, object.body )
     return this
   }
   // Events
