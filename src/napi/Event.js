@@ -26,9 +26,9 @@ class TickEvent extends ActivePlugin {
   }
   onGenerate(){
     this.write( "data/functions/tick.json", JSON.stringify(
-      {values: ctx.namespace + "_tick" }, 0, 2
+      {values: [this.ctx.namespace + "_tick"] }, 0, 2
     ))
-    this.write( "data/functions/" + ctx.namespace + "_tick.mcfunction",
+    this.write( "data/functions/" + this.ctx.namespace + "_tick.mcfunction",
       this.Tick.join( "\n" )
     )
   }

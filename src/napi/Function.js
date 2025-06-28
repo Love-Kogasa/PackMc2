@@ -57,7 +57,7 @@ class McFunction {
     return "function " + this.id
   }
   
-  cmd(){
+  toCmd(){
     return this.toString()
   }
   

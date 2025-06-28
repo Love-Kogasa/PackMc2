@@ -184,6 +184,7 @@ PMC.Addon = class extends PMC.InsertClass {
   }
   generate(){
     if( this.ctx ){
+      this.ctx.generate()
       if( !PMC.isMinecraftRunTime ){
         fs.writeFileSync(path.join(this.dir, "pmc2.mcpkg"), JSON.stringify({
           namespace: this.ns,
@@ -192,11 +193,13 @@ PMC.Addon = class extends PMC.InsertClass {
           minecraftModules: this.smodules
         }, 0, 2 ))
       }
-      return this.ctx.generate()
     }
     this.onGenerate()
   }
-  setNamespace( ns ){ this.ns = ns }
+  setNamespace( ns ){
+    this.ns = ns
+    return this
+  }
   static fromJSON( dir ){
     return new PMC.Addon({}, dir, false)
   }
