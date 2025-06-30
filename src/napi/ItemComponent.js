@@ -1,16 +1,16 @@
 var {ActivePlugin} = require( "../Plugin" )
 
 // Events
-const Event = ( e ) => { event: e },
-  Use = ( e ) => { on_use: Event(e) },
-  UseOn = () => { on_use_on: Event(e) },
-  Attack = () => { on_hurt_entity: Event(e) },
-  Destroy = () => { on_hit_block: Event(e) }
+const Event = ( e ) => ({ event: e }),
+  Use = ( e ) => ({ on_use: Event(e) }),
+  UseOn = () => ({ on_use_on: Event(e) }),
+  Attack = () => ({ on_hurt_entity: Event(e) }),
+  Destroy = () => ({ on_hit_block: Event(e) })
 
 // Components
 const Weapon = function( attack, destroy, nothurt){
   return {...Attack( attack ), ...Destroy( destroy ), on_not_hurt_entity: Event( nothurt ) }
-}, Enchant = ( slot = "sword", value = 10 ) => { value, slot },
+}, Enchant = ( slot = "sword", value = 10 ) => ({ value, slot }),
   RepairItem = ( items, count = 10 ) => {
     if( Array.isArray( items )){
       items.forEach(( value, index ) => items[index] = value.getId())
@@ -25,7 +25,7 @@ const Weapon = function( attack, destroy, nothurt){
   }, Effect = ( effect, level = 1, count = 0, chance = 1 ) => {
     return { name: effect, chance, duration: count, amplifier: level - 1}
   }, Food = ( count = 2, modifier = "normal", always = true, effects ) => {
-    var out = { nutrition: count, saturation_modifier: modifier, can_alwayers_eat: always }
+    var out = { nutrition: count, saturation_modifier: modifier, can_always_eat: always }
     if( effects ){
       if( typeof effects === "string" )
         effects = Effect( ...effects.split( "@" ) )

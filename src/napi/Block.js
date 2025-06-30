@@ -89,7 +89,7 @@ class BlockPlugin extends ActivePlugin {
     }
   }
   createBlock( name, config = {}, f = true ){
-    var block = new Block( this.ctx.namespace + ":block" + this.blocks.length, name, 1, this.i18n )
+    var block = new Block( this.ctx.namespace + ":block" + this.ctx.namespace + this.blocks.length, name, 1, this.i18n )
     var spacialTag = ["texture"]
     if( f ) this.blocks.push( block )
     config.each(function( value, key, stop ){
