@@ -14,6 +14,7 @@ PMC.Recipe = require( "./src/napi/Recipe" )
 PMC.Function = require( "./src/napi/Function" )
 PMC.Block = require( "./src/napi/Block" )
 PMC.Loot = require( "./src/napi/Loot" )
+PMC.ItemComponent = require( "./src/napi/ItemComponent" )
 PMC.Vanilla = require( "./src/napi/Vanilla/Vanilla" )
 PMC.Minecraft = require( "./src/ActiveCore/Minecraft" )
 PMC.isMinecraftRunTime = PMC.Minecraft.isMinecraftRunTime
@@ -34,14 +35,14 @@ PMC.Item = class extends PMC.RePackMcPlugin {
         item.set( key, option[key] )
       }
       if( createFile ){
-        console.log( "Tip: 物品" + name + "的贴图路径为 Addon目录/resources/textures/items/item" + ctx.Items.length + ".(png|jpg)" )
+        console.log( "Tip: 物品" + name + "的贴图路径为 Addon目录/resources/textures/items/" + ctx.namespace + ctx.Items.length + ".(png|jpg)" )
         if( this.file( "resources/textures/item_texture.json" ) ){
           var json = JSON.parse(this.read( "resources/textures/item_texture.json" ))
-          json.texture_data[ "item" + ctx.Items.length ] = { textures: "textures/items/item" + ctx.Items.length }
+          json.texture_data[ "item" + ctx.Items.length ] = { textures: "textures/items/" + ctx.namespace + ctx.Items.length }
           this.write( "resources/textures/item_texture.json", JSON.stringify( json, 0, 2 ) )
         } else {
           var json = {texture_data: {}}
-          json.texture_data[ "item" + ctx.Items.length ] = { textures: "textures/items/item" + ctx.Items.length }
+          json.texture_data[ "item" + ctx.Items.length ] = { textures: "textures/items/" + ctx.namespace + ctx.Items.length  }
           this.write( "resources/textures/item_texture.json", JSON.stringify( json, 0, 2 ) )
         }
         ctx.Items.push( name )
@@ -98,6 +99,7 @@ PMC.Context = class extends PMC.InsertClass  {
     this.loadActivePlugin( PMC.Vanilla )
     this.loadActivePlugin( PMC.Block )
     this.loadActivePlugin( PMC.Loot )
+    this.loadActivePlugin( PMC.ItemComponent )
   }
   onMinecraft( callback ){
     if( PMC.isMinecraftRunTime ) callback( PMC.Minecraft )
