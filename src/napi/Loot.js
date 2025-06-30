@@ -97,7 +97,7 @@ class LootItem {
 
 class LootTable {
   constructor( item, count = 1, plugin ){
-    this.name = plugin.ctx.namespace += "_loot" + plugin.loots.length
+    this.name = plugin.ctx.namespace + "_loot" + plugin.loots.length
     this.plugin = plugin
     this.entries = []
     this.table = {
