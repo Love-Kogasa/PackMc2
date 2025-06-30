@@ -28,7 +28,7 @@ PMC.Item = class extends PMC.RePackMcPlugin {
     super( "Item", ctx, require( "./src/oapi/item" ) )
     ctx.Items = []
     ctx.Item = ( name, option = {}, createFile = true ) => {
-      var item = this.callMethod( createFile, ctx.namespace + ":item" + ctx.Items.length, "item" + ctx.Items.length, name, option.type || "equipment" )
+      var item = this.callMethod( createFile, ctx.namespace + ":item" + ctx.Items.length, ctx.namespace + ctx.Items.length, name, option.type || "equipment" )
       var jump = [ "type" ]
       for( let key of Object.keys( option ) ){
         if( jump.includes( key ) ) continue;
@@ -38,11 +38,11 @@ PMC.Item = class extends PMC.RePackMcPlugin {
         console.log( "Tip: 物品" + name + "的贴图路径为 Addon目录/resources/textures/items/" + ctx.namespace + ctx.Items.length + ".(png|jpg)" )
         if( this.file( "resources/textures/item_texture.json" ) ){
           var json = JSON.parse(this.read( "resources/textures/item_texture.json" ))
-          json.texture_data[ "item" + ctx.Items.length ] = { textures: "textures/items/" + ctx.namespace + ctx.Items.length }
+          json.texture_data[ ctx.namespace + ctx.Items.length ] = { textures: "textures/items/" + ctx.namespace + ctx.Items.length }
           this.write( "resources/textures/item_texture.json", JSON.stringify( json, 0, 2 ) )
         } else {
           var json = {texture_data: {}}
-          json.texture_data[ "item" + ctx.Items.length ] = { textures: "textures/items/" + ctx.namespace + ctx.Items.length  }
+          json.texture_data[ ctx.namespace + ctx.Items.length ] = { textures: "textures/items/" + ctx.namespace + ctx.Items.length  }
           this.write( "resources/textures/item_texture.json", JSON.stringify( json, 0, 2 ) )
         }
         ctx.Items.push( name )
