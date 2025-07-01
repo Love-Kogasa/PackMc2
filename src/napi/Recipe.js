@@ -32,7 +32,19 @@ class CraftingTable {
         }, tags: [].concat(this.where),
         pattern: this.recipe.table,
         key: this.recipe.key,
-        result: { item: this.output, count: this.count }
+        result: (() => {
+          if( Array.isArray( this.output ) ){
+            var output = [...this.output]
+            output.forEach(( value, key ) => {
+              if( typeof output[key] == "string" ){
+                output[key] = { item: value, count: this.count }
+              } else {
+                output[key].count && (output[key].count = count)
+              }
+            })
+            return output
+          } else return { item: this.output, count: this.count }
+        })()
       }
     }
   }
@@ -75,7 +87,21 @@ class Recipe extends ActivePlugin {
     } else {
       recipe = table
     }
-    var table = new CraftingTable( this.ctx.namespace + ":recipe" + this.recipes.length, item.id ? item.id : item.getId ? item.getId() : item.toString(), recipe, count, tag)
+    var table = new CraftingTable( this.ctx.namespace + ":recipe" + this.recipes.length,(() => {
+      if( Array.isArray( item )){
+        var otp = []
+        for( let itemobj of item ){
+          let tryId = getId( itemobj )
+          if( typeof tryId == "object" ){
+            otp.push( tryId )
+          } else otp.push( tryId )
+        }
+        return otp
+      } else return getId( item )
+      function getId( item ){
+        return item.id ? item.id : item.getId ? item.getId() : item
+      }
+    })(), recipe, count, tag)
     this.recipes.push( table )
     return table
     function hasItem( key, item ){

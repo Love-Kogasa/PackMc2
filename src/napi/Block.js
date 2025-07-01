@@ -29,9 +29,10 @@ class Block {
   }
   extend( block, texture = false ){
     block.object.component.each((value, key) => {
-      this.object.component[key] = value
+      if( !key.includes( "material_instances" ) && !key.includes( "minecraft:display_name" ) ){
+        this.object.component[key] = value
+      }
     })
-    this.rename( block.name )
     if( texture ) this.texture = block.texture
     this.sound = block.sound
     return this
@@ -62,7 +63,7 @@ class Block {
   }
   rename( name ){
     this.name = name
-    i18n.t( "tile." + this.object.subId() + ".name", name )
+    this.i18n.t( "tile." + this.object.subId() + ".name", name )
   }
   event( k, v ){
     if( !this.object.event ) this.object.initEvent()
@@ -70,6 +71,9 @@ class Block {
       this.object.setEvent( k, v )
       return this
     } else return this.object.event[k]
+  }
+  setEvent( key, object ){
+    return this.event( key, object )
   }
   jsonify(){
     return this.object.json()
@@ -105,51 +109,54 @@ class BlockPlugin extends ActivePlugin {
     this.blocks.forEach(( v, k, a ) => {
       this.write( "data/blocks/" + v.object.subId() + ".json", v.jsonify().jsonify() )
       var textureList = []
-      this.json( "resources/blocks.json", ( data ) => {
-        var textures = {}
-        if( v.texture == 1 ){
-          textures = v.object.subId()
-          textureList.push( textures )
-        } else if( v.texture == 2 ){
-          textures = {
-            up: v.object.subId() + "_top",
-            down: v.object.subId() + "_top",
-            side: v.object.subId() + "_side"
+        this.json( "resources/blocks.json", ( data ) => {
+          var textures = {}
+          if( v.texture == 1 ){
+            textures = v.object.subId()
+            textureList.push( textures )
+          } else if( v.texture == 2 ){
+            textures = {
+              up: v.object.subId() + "_top",
+              down: v.object.subId() + "_top",
+              side: v.object.subId() + "_side"
+            }
+            textureList.push( v.object.subId() + "_top" )
+            textureList.push( v.object.subId() + "_side" )
+          } else if( v.texture == 3 ){
+            textures = {
+              up: v.object.subId() + "_top",
+              down: v.object.subId() + "_bottom",
+              side: v.object.subId() + "_side"
+            }
+            textureList.push( v.object.subId() + "_top" )
+            textureList.push( v.object.subId() + "_side" )
+            textureList.push( v.object.subId() + "_bottom" )
+          } else {
+            textures = {
+              up: v.object.subId() + "_top",
+              down: v.object.subId() + "_bottom",
+              south: v.object.subId() + "_south",
+              north: v.object.subId() + "_north",
+              west: v.object.subId() + "_west",
+              east: v.object.subId() + "_east"
+            }
+            textureList.push( v.object.subId() + "_top" )
+            textureList.push( v.object.subId() + "_south" )
+            textureList.push( v.object.subId() + "_north" )
+            textureList.push( v.object.subId() + "_west" )
+            textureList.push( v.object.subId() + "_east" )
+            textureList.push( v.object.subId() + "_bottom" )
           }
-          textureList.push( v.object.subId() + "_top" )
-          textureList.push( v.object.subId() + "_side" )
-        } else if( v.texture == 3 ){
-          textures = {
-            up: v.object.subId() + "_top",
-            down: v.object.subId() + "_bottom",
-            side: v.object.subId() + "_side"
+          data[ v.id ] = {textures, sound : v.sound}
+          if( v.get( "geometry" ) ){
+            textureList.push( v.getId() )
           }
-          textureList.push( v.object.subId() + "_top" )
-          textureList.push( v.object.subId() + "_side" )
-          textureList.push( v.object.subId() + "_bottom" )
-        } else {
-          textures = {
-            up: v.object.subId() + "_top",
-            down: v.object.subId() + "_bottom",
-            south: v.object.subId() + "_south",
-            north: v.object.subId() + "_north",
-            west: v.object.subId() + "_west",
-            east: v.object.subId() + "_east"
-          }
-          textureList.push( v.object.subId() + "_top" )
-          textureList.push( v.object.subId() + "_south" )
-          textureList.push( v.object.subId() + "_north" )
-          textureList.push( v.object.subId() + "_west" )
-          textureList.push( v.object.subId() + "_east" )
-          textureList.push( v.object.subId() + "_bottom" )
-        }
-        data[ v.id ] = {textures, sound : v.sound}
-      })
+        })
       this.json( "resources/textures/terrain_texture.json", (data) => {
         if( !data.texture_data ) data.texture_data = {}
         textureList.forEach( (id) => {
-          data.texture_data[id] = {textures: "textures/blocks/" + id}
-          console.log( "Tip: 方块" + v.name + "的贴图在 textures/blocks/" + id )
+          data.texture_data[id] = {textures: "textures/blocks/" + (id.includes( ":" ) ? id.split( ":" )[1] : id) }
+          console.log( "Tip: 方块" + v.name + "的贴图在 textures/blocks/" + (id.includes( ":" ) ? id.split( ":" )[1] : id) )
         })
       })
     })

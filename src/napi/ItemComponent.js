@@ -3,9 +3,9 @@ var {ActivePlugin} = require( "../Plugin" )
 // Events
 const Event = ( e ) => ({ event: e }),
   Use = ( e ) => ({ on_use: Event(e) }),
-  UseOn = () => ({ on_use_on: Event(e) }),
-  Attack = () => ({ on_hurt_entity: Event(e) }),
-  Destroy = () => ({ on_hit_block: Event(e) })
+  UseOn = ( e ) => ({ on_use_on: Event(e) }),
+  Attack = ( e ) => ({ on_hurt_entity: Event(e) }),
+  Destroy = ( e ) => ({ on_hit_block: Event(e) })
 
 // Components
 const Weapon = function( attack, destroy, nothurt){
