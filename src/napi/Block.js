@@ -23,7 +23,7 @@ class Block {
       "minecraft:destroy_time": 0.5,
       "minecraft:map_color": "#000000",
       "minecraft:material_instances": {
-        "*": { "texture": id }
+        "*": { "texture": id, render_method: "alpha_test" }
       }
     })
   }
@@ -60,6 +60,11 @@ class Block {
   }
   setSound( s ){
     this.sound = s
+    return this
+  }
+  setRender( rendermode ){
+    this.object.component[ "minecraft:material_instances" ]["*"].render_method = rendermode
+    return this
   }
   rename( name ){
     this.name = name
